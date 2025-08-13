@@ -13,6 +13,8 @@ jobs:
         uses: zricethezav/gitleaks-action@v2
         with:
           args: --redact
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
 
       - name: tfsec (IaC scan)
         if: ${{ hashFiles('terraform/**/*,tf') != '' }}
