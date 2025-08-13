@@ -1,1 +1,29 @@
+name: CI - Security Gates(no app deps)
+
+on:
+  pull_request:
+
+jobs:
+  security-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: gitleaks (secrets scan)
+        uses: zricethezav/gitleaks-action@v2
+        with:
+          args: --redact
+
+      - name: tfsec (IaC scan)
+        if: ${{ hashFiles('terraform/**/*,tf') != '' }}
+        uses: aquasecurity/tfsec-action@v1
+
+      - name: SonarCloud Scan (SAST)
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          SONAR_TOKEN: $ {{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=lengmantez
+            -Dsonar.projectKey=secure-pipeline-demo
 
