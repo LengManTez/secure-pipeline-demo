@@ -16,7 +16,7 @@ jobs:
 
       - name: tfsec (IaC scan)
         if: ${{ hashFiles('terraform/**/*,tf') != '' }}
-        uses: aquasecurity/tfsec-action@v1
+        uses: aquasecurity/tfsec-action@v1.0.0 
 
       - name: SonarCloud Scan (SAST)
         uses: SonarSource/sonarcloud-github-action@v2
